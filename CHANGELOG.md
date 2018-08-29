@@ -316,3 +316,168 @@ This is the first release of Turpentine marked "stable" in Magento Connect
   the cache (including ESI) for a single *admin* session (thanks to @alexandre-jardin)
   * Varnish will now strip the Google-related parameters from the request to
   increase cache hit-rate
+
+### RELEASE-0.5.5
+
+  * Made VCL templates slightly shorter to help with running into the inline
+  VCL character limit
+  * The `warm-cache.sh` script now respects the `PROC` environment variable for
+  the number of processes to use while warming the cache
+  * [#253] Fixed VCL to correctly identify Chrome on OS X
+  * [#281] Fixed unintentional flushing of full cache in some cases (thanks
+  @jeroenvermeulen)
+  * [#301] Fixed IE caching AJAX ESI includes (thanks @nickbock)
+  * [#320] AJAX ESI should be compatible with themes that use jQuery instead of
+  Prototype (thanks @steverice)
+  * [#334] Bad URIs that cause the dummy request creation to throw an exception
+  will now log the bad URI and hide the exception when debugging is disabled
+  (thanks @ajardin)
+  * [#337] Improve layout handle searching for ESI blocks in some cases (thanks
+  @sanbornm)
+  * [#356] Fix ESI blocks not rendering child blocks (thanks @magedev)
+  * Changed Varnish-generated session ID format for compatibility with the
+  SFC_Kount extension
+  * Failures during advanced registry loading in ESI requests should be handled
+  more gracefully
+
+### RELEASE-0.6.0
+
+This release *requires* a small addition to Varnish's configuration when used with
+Magento CE 1.8+ or EE 1.13+, see [these instructions](https://github.com/nexcess/magento-turpentine/wiki/FAQ#wiki-i-upgraded-to-turpentine-06-and-are-the-add-to-cart-buttons-look-broken)
+
+  * [#362] Fixed ESI detection for message block (thanks @eth8505)
+  * [#380] Fixed ESI cache flushes not firing in some cases (thanks @gabrielsomoza)
+  * [#391] Added Magento Composer Installer support (thanks @ajardin)
+  * [#405] Fixed disabling Varnish bypass (thanks @ajardin)
+  * [#438] Implemented ban lurker-friendly bans (thanks @jeroenvermeulen)
+  * [#443] Fixed caching of static assets when the *Add Store Code to Urls* option
+  is enabled (thanks @jeroenvermeulen)
+  * [#345] Fixed compatibility with Magento CE 1.8 and EE 1.13
+
+### RELEASE-0.6.1
+
+  * [#471] Fixed `addMessage()` in messages block (@arosenhagen)
+  * [#445] Update `Cron.php` for compatibility with MageWorx_XSitemap (@evensisftw)
+  * [#474] Add ESI decoder utility (@jeroenvermeulen)
+  * [#485] Trigger layout events when rendering ESI blocks (@eth8505)
+  * [#490] Fix missing ESI blocks when they are defined in a reference instead
+  of a block (@paales)
+  * [#472] Added `<only_cache_if>` ESI parameter for caching flash message
+  blocks (@jeroenvermeulen)
+  * [#494] Added option to control the stripping of whitespace from generated
+  VCLs (@eth8505)
+  * [#549] Enabling the `fix_product_toolbar` option now clears previously set
+  view preferences (@jeroenvermeulen)
+  * [#529] Added decoding of the referrer to the ESI decoder
+  utility (@jeroenvermeulen)
+  * [#536] Allow `//` (double slash) comments in VCL files and strip them when
+  trimming whitespace (@eth8505)
+
+### RELEASE-0.6.2
+
+  * [#635] Fixed typos (@pborelli)  
+  * [#668] Replace short open tag (@XnS)
+  * [#721] Fix license according to SPDX (@ihor-sviziev)
+  * [#740] Do not return pipe for OPTIONS straight away (@ashsmith)
+  * [#598] Ensure POST request gets normalized data (@melvyn-sopacua)
+  * [#739] Ban CMS Page after a CMS Revision has been updated (@ashsmith)
+  * Added fix for community poll problems
+  * [#516] Fixes multiple sessions generated on first page visit (@jharrisonau)
+  * [#796] Ignore additional GET Parameters in Varnish Cache via Configuration (@thampe)
+  * [#626] Fix for dummy blocks not working (@jeroenvermeulen)
+  * [#719) Replace connect20/nexcessnet_turpentine package in composer.json (@ihor-sviziev)
+
+### RELEASE-0.6.3
+  * [#499] Use rewrite instead of local Session model for form key handling (@eth8505)  
+  * [#817] Damian/cache management extended. Added validations for EE and Full Page cache (@damian-pastorini)
+  * [#521] Fix for search input field on search results page (@jeroenvermeulen)
+  * Fix for recently viewed products block in CE 1.9.1 (Issue #801)
+  * [#522] Custom log file (issue #510) (@eth8505)
+  * [#836] Add OS X .DS_Store and nbproject to gitignore (@cbb7123)
+  * [#832] Fixed duplicated frontend cookie bug (@mabigo)
+  * [#527] Feature/admin clear specific page (@craigcarnell)
+  * [#838] Added customer_group access option to cache based on customer group (@pejoo)
+  * [#825] Fix messages returning a empty "ul" (@BarryCarlyon)
+  * [#826] Tweak logging for empty getNameInLayout (@BarryCarlyon)
+  * [#843] Check if path isset before using it (@craigcarnell) 
+  * Removed session generation code in VCL - see issue #345
+  * [#586] Updated debug helper (@magedev)
+  * [#848] Replace Nexcessnet_Turpentine_Model_Dummy_Request with Magento model (@craigcarnell)  
+  * [#849]  escape | character (@craigcarnell)
+  * Better escaping of double slashes in urls (for better hitrate) (@joolswills)
+  * [#860] Removing ref to nonexistent file from modman (@cgrice  )
+  * [#596] update docs to make an important notice on Crawler IP Addresses setting under Caching Options (@arosenhagen)
+  * [#878] Explicit cache bypass for progress sections (@astorm)
+  * [#844] Fix for HTTPS ESI URLs (@jeroenvermeulen)
+  * [#865] Implemented load balancing support (@jeroenvermeulen)
+
+### RELEASE-0.6.5
+  * Varnish 4 (@aheadley @aricwatson)
+
+### RELEASE-0.6.6
+  * [#923] DetermineVersion 3.0 to 3.0.3 bugfix (@timmuller)  
+  * [#945] Send unmodified url to the backend server (@thampe)  
+  * [#885] Add maintenance mode that will allow debug_ips through to visit the site, all other users get the landing page (@craigcarnell)  
+  * [#955] Include theme specific handles to ESI data (@LyndonHook)  
+  * [#972] Fixed bug with wrong return value of ->getSkinUrl() (@ceckoslab)
+
+### RELEASE-0.6.7
+  * [#951] Added 'disableEsiInjection' ESI policy option.  
+  * [#1005]  Invalidating cms pages with url enging with slash. (@sivaschenko)  
+  * [#1020] Add the form key to wishlist submit to prevent 403 errors. (@paulpartington)
+  * [#1036] Prime Checkout and Light Checkout Compatibility. (@sprankhub)
+  * [#1050] Use Simple Hash" option for static files. (@jeroenvermeulen) 
+  * [#1031] Improved helper function getModelName(). (@jeroenvermeulen) 
+  * [#1066] Fix for crawler lock problem with CM_RedisSession. (@jeroenvermeulen)
+
+### RELEASE-0.6.8
+  * [#1065] Added ESI policy for cookie notice block. (@aricwatson)
+  * [#1066] Fix for crawler lock problem with CM_RedisSession (@jeroenvermeulen )
+  * [#1072] Scrutinizer Auto-Fixes. (@miguelbalparda)
+  * [#1078] Fix regex check - blank value passed check. (@aricwatson)
+  * [#1087] Fixed missing '}' typo #1087. (@aricwatson)
+  * [#1117] Fix #1100. (@GLips)
+  * [#1155] Update TECHNICAL_NOTES.md. (@GLips)
+
+### RELEASE-0.6.9 -> 0.7.0
+  * [#1162] Support PHP7. (@allardhoeve)
+  * [#1173] Fix load balancing for Varnish 4. (@kleinmann)
+  * [#1182] Update version-3.vcl normalisation. (@gewaechshaus)
+
+### RELEASE-0.7.1
+
+  * [#1189] Custom Admin Path with Add Store Code to URLs (@miguelbalparda)
+  * [#1195] Fix for issue #1093 - poll still displaying when module output disabled (@aricwatson)
+  * [#1212] Allows Custom VCL template (@aricwatson)
+  * [#1214] Generate global blocks like formkey for ESI-Blocks (@possi)
+  * [#1216] Adds and implements an option to log all commands sent to Varnish (@aricwatson)
+  * [#1225] Enhanced block logging (@aricwatson)
+  * [#1226] Condensed the UA "buckets" down to just "mobile" and "other" (@aricwatson)
+  * [#1232] Adds better logging of hash_data calls in vcl_hash (@aricwatson)
+  * [#1243] Adds more flexibility/options to warm-cache.sh (@aricwatson)
+  * [#1254] Add customer_group caching to varnish 4 template  feature (@jg-development)
+  * [#1258] Fix issue with customer name not being removed from header when clearing persistent cookie (@careysizer)
+  * [#1261] Fixed Crawler UserAgent regexp to match newer Siege versions. (@jeroenvermeulen)
+  * [#1262] Bugfix in "Normalize Encoding" for visitors who accept "*"  (@jeroenvermeulen)
+  * [#1264] #963 Fix the Nginx 403 issue with urls which are starting with a dot (@andreasemer)
+  * [#1266] #878 Add onepage checkout progress review for varnish exclude in config (@jg-development)
+  * [#1271] #1270 Fix: Improve condition to support safari browser Event  feature (@AlexanderPok)
+  * [#1282] Added one more format for configuration regexp  bug (@odi-um)
+  * [#1289] Fix the issue when redirect HTTP to HTTPS  feature (@hmphu)
+  * [#1298] Removed unused code (@nickua) 
+
+### RELEASE-0.7.2
+* [#885] Add maintenance mode that will allow debug_ips through to visit the site, all other users get the landing page @craigcarnell
+* [#1132] use pass instead of pipe on non GET requests to improve performance @andrewkett 
+* [#1334] Small fix for notice when CM_REDISSESSION_LOCKING_ENABLED is already defined @jeroenvermeulen
+* [#1301] Fix for picking the wrong block from the layout when multiple blocks found - v2 @jeroenvermeulen
+* [#1332] varnish 4.1 compatibility @bordeo
+* [#1335] Revert "use pass instead of pipe on non GET requests to improve performance" @miguelbalparda
+* [#1336] Scrutinizer Auto-Fixes @miguelbalparda
+* [#1313] Keep params from original url @hmphu
+
+### RELEASE-0.7.3
+* [#1400] Use vcl_ prefix in vcl name to avoid invalid character in name error @josh-palan
+* [#1405] When using hitch, we need to set http.X-Forwarded-Proto to HTTPS @craigcarnell
+* [#1410] Fix issue #1409: Solved by keeping Cache-Control header @jeroenvermeulen
+* [#1423] Fixes for #1404 #1361 #1423

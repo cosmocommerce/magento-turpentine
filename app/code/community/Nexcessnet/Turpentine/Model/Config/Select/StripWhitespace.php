@@ -19,27 +19,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-class Nexcessnet_Turpentine_Model_Observer_Debug extends Varien_Event_Observer {
-
-    /**
-     * Log an occurance of a specific event
-     *
-     * @param  Varien_Object $eventObject
-     * @return null
-     */
-    public function logEvent($eventObject) {
-        Mage::helper('turpentine/debug')->log('EVENT: %s',
-            $eventObject->getEvent()->getName());
-    }
-
-    /**
-     * Log a backtrace on an event
-     *
-     * @param  Varien_Object $eventObject
-     * @return null
-     */
-    public function logBackTrace($eventObject) {
-        $this->logEvent($eventObject);
-        Mage::helper('turpentine/debug')->logBackTrace();
+class Nexcessnet_Turpentine_Model_Config_Select_stripWhitespace {
+    public function toOptionArray() {
+        $helper = Mage::helper('turpentine');
+        return array(
+            array('value' => 'always', 'label' => $helper->__('Always')),
+            array('value' => 'apply', 'label' => $helper->__('Only when applying directly to Varnish')),
+            array('value' => 'never', 'label' => $helper->__('Never')),
+        );
     }
 }

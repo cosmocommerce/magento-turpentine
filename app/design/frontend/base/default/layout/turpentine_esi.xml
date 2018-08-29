@@ -44,6 +44,8 @@
                         <wishlist_item_save_after/>
                         <wishlist_item_delete_after/>
                         <sales_quote_save_after/>
+                        <controller_action_layout_render_before_catalogsearch_result_index />
+                        <persistent_session_expired/>
                     </flush_events>
                 </params>
             </action>
@@ -88,6 +90,8 @@
                     <access>private</access>
                     <flush_events>
                         <catalog_product_compare_add_product/>
+                        <catalog_product_compare_remove_product/>
+                        <catalog_product_compare_item_collection_clear/>
                     </flush_events>
                 </params>
             </action>
@@ -96,25 +100,21 @@
             <action method="setEsiOptions">
                 <params>
                     <access>private</access>
+                    <method>ajax</method>
                     <flush_events>
                         <poll_vote_add/>
                     </flush_events>
                 </params>
             </action>
         </reference>
-
-        <!-- Messages are not cached because the "messages cleared" event is
-        not reliable -->
         <reference name="global_messages">
             <action method="setEsiOptions">
                 <params>
                     <access>private</access>
-                    <method>ajax</method>
-                    <!-- if this is ever cached we should flush on this event
                     <flush_events>
                         <core_session_abstract_add_message/>
                     </flush_events>
-                    -->
+                    <only_cache_if>no_text</only_cache_if>
                 </params>
             </action>
         </reference>
@@ -122,12 +122,10 @@
             <action method="setEsiOptions">
                 <params>
                     <access>private</access>
-                    <method>ajax</method>
-                    <!-- if this is ever cached we should flush on this event
                     <flush_events>
                         <core_session_abstract_add_message/>
                     </flush_events>
-                    -->
+                    <only_cache_if>no_text</only_cache_if>
                 </params>
             </action>
         </reference>
@@ -141,6 +139,16 @@
                 </params>
             </action>
         </reference>
+
+        <reference name="global_cookie_notice">
+            <action method="setEsiOptions">
+                <params>
+                        <access>private</access>
+                        <only_cache_if>no_text</only_cache_if>
+                </params>
+            </action>
+        </reference>
+        
     </default>
 
     <!-- Blocks only visible when logged in -->
@@ -184,6 +192,39 @@
         -->
     </catalog_product_compare_index>
 
+    <!-- Catalog Search -->
+
+    <!--
+    If the search input box is inside the header, it needs to contain the current search string after searching.
+    The block below overrules the ESI Options for the header on the search results page.
+    We change the scope of the header to "page", so the current URL is passed to the ESI request.
+    We set the TTL to 0, because the same user is probably not going to search for the same string again.
+    -->
+    <catalogsearch_result_index>
+        <reference name="header">
+            <action method="setEsiOptions">
+                <params>
+                    <access>private</access>
+                    <scope>page</scope>
+                    <ttl>0</ttl>
+                </params>
+            </action>
+        </reference>
+    </catalogsearch_result_index>
+
+    <!-- fixes issues with 'recently viewed products' in CE 1.9's RWD theme -->
+    <catalog_category_layered_nochildren>
+        <reference name="left.reports.product.viewed">
+                <action method="setEsiOptions">
+                    <params>
+                        <access>private</access>
+                        <flush_events>
+                            <catalog_controller_product_view/>
+                        </flush_events>
+                    </params>
+                </action>
+        </reference>
+    </catalog_category_layered_nochildren>
 
     <!-- Checkout -->
 
@@ -213,6 +254,26 @@
         <turpentine_cache_flag value="0"/>
     </checkout_onepage_progress>
 
+    <checkout_onepage_progress_billing>
+        <turpentine_cache_flag value="0"/>
+    </checkout_onepage_progress_billing>
+
+    <checkout_onepage_progress_shipping>
+        <turpentine_cache_flag value="0"/>
+    </checkout_onepage_progress_shipping>
+
+    <checkout_onepage_progress_shipping_method>
+        <turpentine_cache_flag value="0"/>
+    </checkout_onepage_progress_shipping_method>
+
+    <checkout_onepage_progress_payment>
+        <turpentine_cache_flag value="0"/>
+    </checkout_onepage_progress_payment>
+
+    <checkout_onepage_progress_review>
+        <turpentine_cache_flag value="0"/>
+    </checkout_onepage_progress_review>
+
     <checkout_onepage_paymentmethod>
         <turpentine_cache_flag value="0"/>
     </checkout_onepage_paymentmethod>
@@ -236,6 +297,126 @@
     <checkout_onepage_failure>
         <turpentine_cache_flag value="0"/>
     </checkout_onepage_failure>
+
+    <checkout_prime_debug>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_debug>
+
+    <checkout_prime_index>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_index>
+
+    <checkout_prime_login_step_info>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_login_step_info>
+
+    <checkout_prime_payment_step_info>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_payment_step_info>
+
+    <checkout_prime_progress>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_progress>
+
+    <checkout_prime_review>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_review>
+
+    <checkout_prime_savepayment>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_savepayment>
+
+    <checkout_prime_shipping_step_info>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_shipping_step_info>
+
+    <checkout_prime_getstepinfo>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_getstepinfo>
+
+    <checkout_prime_saveorder>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_saveorder>
+
+    <checkout_prime_getaddress>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_getaddress>
+
+    <checkout_prime_savemethod>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_savemethod>
+
+    <checkout_prime_failure>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_failure>
+
+    <checkout_prime_saveshippingmethod>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_saveshippingmethod>
+
+    <checkout_prime_savecoupon>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_savecoupon>
+
+    <checkout_prime_savebilling>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_savebilling>
+
+    <checkout_prime_success>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_success>
+
+    <checkout_prime_saveshipping>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_saveshipping>
+
+    <checkout_prime_shippingmethod>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_shippingmethod>
+
+    <checkout_prime_getadditional>
+        <turpentine_cache_flag value="0"/>
+    </checkout_prime_getadditional>
+
+    <gomage_checkout_onepage_index>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_index>
+
+    <gomage_checkout_onepage_methods>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_methods>
+
+    <gomage_checkout_onepage_paymentmethod>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_paymentmethod>
+
+    <gomage_checkout_onepage_centinel>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_centinel>
+
+    <gomage_checkout_onepage_review>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_review>
+
+    <gomage_checkout_onepage_customerlogin>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_customerlogin>
+
+    <gomage_checkout_onepage_review>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_review>
+
+    <gomage_checkout_onepage_forgotpassword>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_forgotpassword>
+
+    <gomage_checkout_onepage_ajax>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_ajax>
+
+    <gomage_checkout_onepage_save>
+        <turpentine_cache_flag value="0"/>
+    </gomage_checkout_onepage_save>
 
     <!-- End Checkout -->
 
@@ -273,6 +454,11 @@
     <customer_account_confirmation>
         <turpentine_cache_flag value="0"/>
     </customer_account_confirmation>
+
+    <contacts_index_index>
+        <!-- wholepunching the contactForm block is not enough since the form action is wrong in this case -->
+        <turpentine_cache_flag value="0"/>
+    </contacts_index_index>
 
 <!--
     <customer_account_edit>
